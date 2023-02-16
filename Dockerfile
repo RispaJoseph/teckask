@@ -8,7 +8,7 @@ RUN apt-get update && \
     sudo
 
 # Installing DOcker
-RUN apt-get install docker.io
+RUN sudo apt-get install docker.io
 
 # Create jenkins user with sudo privileges
 RUN useradd -ms /bin/bash jenkins && \
