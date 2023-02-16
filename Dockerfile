@@ -8,7 +8,16 @@ RUN apt-get update && \
     sudo
 
 # Installing DOcker
-RUN sudo apt-get install docker.io
+RUN sudo apt remove docker-desktop
+    rm -r $HOME/.docker/desktop
+    sudo rm /usr/local/bin/com.docker.cli
+    sudo apt purge docker-desktop
+ 
+    sudo apt install gnome-terminal
+    sudo apt-get update
+    sudo apt-get install ./docker-desktop-<version>-<arch>.deb
+    systemctl --user start docker-desktop
+    docker --version
 
 # Create jenkins user with sudo privileges
 RUN useradd -ms /bin/bash jenkins && \
