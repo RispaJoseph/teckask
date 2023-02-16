@@ -7,6 +7,9 @@ RUN apt-get update && \
     apt-get install -y \
     sudo
 
+sudo rm /var/lib/dpkg/lock    
+sudo rm /var/cache/apt/archives/lock
+
 # Create jenkins user with sudo privileges
 RUN useradd -ms /bin/bash jenkins && \
     usermod -aG sudo jenkins
