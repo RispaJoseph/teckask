@@ -1,0 +1,24 @@
+node {
+    stage('Git checkout'){
+        git 'https://github.com/RispaJoseph/teckask.git'
+    }
+    
+    stage('Docker build image'){
+        sh 'docker build -t $JOB_NAME:v1.$BUILD_ID .'
+    }
+    
+    stage('Docker image tagging'){
+        sh 'docker image tag $JOB_NAME:v1.$BUILD_ID rispajoseph/$JOB_NAME:v1.$BUILD_ID '
+        sh 'docker image tag $JOB_NAME:v1.$BUILD_ID rispajoseph/$JOB_NAME:latest'
+    }
+    
+    stage('Push Docker images to Dockerhub'){
+        withCredentials([string(credentialsId: 'dockerhub_passwd', variable: 'dockerhub_passwd')]){
+            sh "docker login -u rispajoseph -p ${dockerhub_passwd}"
+            sh 'docker image push rispajoseph/$JOB_NAME:v1.$BUILD_ID'
+            sh 'docker image push rispajoseph/$JOB_NAME:latest'
+            sh 'docker image rm rispajoseph/$JOB_NAME:v1.$BUILD_ID rispajoseph/$JOB_NAME:latest $JOB_NAME:v1.$BUILD_ID '
+        }
+    }
+    
+}
