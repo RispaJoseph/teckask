@@ -1,0 +1,9 @@
+node {
+    stage('Git checkout'){
+        git 'https://github.com/RispaJoseph/teckask.git'
+    }
+    
+    stage('Creating deployment'){
+        sh 'helm install teckask webapp'
+    }
+}
